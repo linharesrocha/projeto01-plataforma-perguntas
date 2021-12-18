@@ -16,12 +16,17 @@ app.use(express.urlencoded ({extended: true}));
 app.use(express.json())
 
 app.get("/", (req, res) => {
-    res.render("index");
-})
+    Pergunta.findAll({raw: true}).then((perguntas) => {
+        res.render("index", {
+            perguntas: perguntas
+        });
+    });
+    
+});
 
 app.get("/perguntar", (req, res) => {
     res.render("perguntar")
-})
+});
 
 app.post("/salvarpergunta", (req, res) => {
     var titulo = req.body.titulo;
