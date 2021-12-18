@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const connection = require("./database/database");
-const perguntaModel = require("./database/Pergunta");
+const Pergunta = require("./database/Pergunta");
 
 connection.authenticate().then(() => {
     console.log("Conexão feita com o banco de dados!")
@@ -26,7 +26,13 @@ app.get("/perguntar", (req, res) => {
 app.post("/salvarpergunta", (req, res) => {
     var titulo = req.body.titulo;
     var descricao = req.body.descricao;
-    res.send("Formulario recebido " + titulo + " " + " descricao " + descricao)
+
+    Pergunta.create({
+        titulo: titulo,
+        descricao: descricao
+    }).then(() => {
+        res.redirect("/");
+    });
 })
 
 app.listen(8080, (error) => {
